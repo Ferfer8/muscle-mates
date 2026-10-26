@@ -1,0 +1,4748 @@
+/* Styles for the whole app: sidebar, feed grid, pop-ups, stories, messages, notifications, profile and settings. Sections are marked with comments. */
+
+/* General styles for the entire body */
+body
+{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    /* The sidebar's width lives in one variable, so the sidebar and every page that sits beside it stay in step */
+    --sidebar-width: 240px;
+}
+
+body.sidebar-collapsed
+{
+    --sidebar-width: 76px;
+}
+
+/* Styles for the sidebar menu and its contents*/
+.sidebar-menu
+{
+    width: var(--sidebar-width);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: width .25s ease;
+    background-color: #F7FAFC;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding-top: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.logo
+{
+    text-align: center;
+}
+
+.logo img
+{
+    width: 100px;
+    height: 100px;
+    transition: width .25s ease, height .25s ease;
+}
+
+.sidebar-collapsed .logo img
+{
+    width: 48px;
+    height: 48px;
+}
+
+.menu
+{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style-type: none;
+    margin: 28px 0 0;
+    padding: 0 12px;
+}
+
+.menu li a
+{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    text-decoration: none;
+    color: #282828;
+    font-size: 15px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.menu li a i
+{
+    flex: none;
+    width: 28px;
+    font-size: 26px;
+    text-align: center;
+    color: #5b5b5b;
+}
+
+.menu li a > *
+{
+    transition: color .2s ease, transform .2s ease;
+}
+
+/* Hover and keyboard focus: a soft purple tint, purple text and icon, and a small nudge of the icon and text.
+   Only the contents move, never the link itself, so its clickable area stays put under the cursor. */
+.menu li a:hover,
+.menu li a:focus-visible
+{
+    background-color: rgba(53, 0, 211, .09);
+    color: #240090;
+}
+
+.menu li a:hover > *,
+.menu li a:focus-visible > *
+{
+    transform: translateX(4px);
+}
+
+.menu li a:hover i,
+.menu li a:focus-visible i
+{
+    color: #3500D3;
+}
+
+.menu li a:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+/* The page currently being viewed */
+.menu li a.active
+{
+    background-color: #240090;
+    color: #fff;
+    font-weight: bold;
+}
+
+.menu li a.active i
+{
+    color: #fff;
+}
+
+.menu li a.active:hover
+{
+    background-color: #190061;
+    color: #fff;
+}
+
+/* Label text: fades and shrinks to nothing when the sidebar collapses, leaving only the icons */
+.menu li a span
+{
+    max-width: 160px;
+    overflow: hidden;
+    opacity: 1;
+    transition: max-width .25s ease, opacity .15s ease;
+}
+
+.sidebar-collapsed .menu li a span
+{
+    max-width: 0;
+    opacity: 0;
+}
+
+.sidebar-collapsed .menu li a
+{
+    justify-content: center;
+    gap: 0;
+    padding: 12px 0;
+}
+
+/* The collapse / expand button at the bottom of the sidebar */
+/* margin-top: auto pushes the button to the bottom when there is room, and leaves it just below the menu when there isn't */
+.sidebar-toggle
+{
+    flex: none;
+    margin: auto 12px 4px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 14px;
+    background: none;
+    font-family: inherit;
+    font-size: 15px;
+    color: #5b5b5b;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.sidebar-toggle i
+{
+    flex: none;
+    width: 28px;
+    font-size: 26px;
+    text-align: center;
+    transition: transform .25s ease;
+}
+
+.sidebar-toggle span
+{
+    max-width: 160px;
+    overflow: hidden;
+    transition: max-width .25s ease, opacity .15s ease;
+}
+
+.sidebar-toggle:hover,
+.sidebar-toggle:focus-visible
+{
+    background-color: rgba(53, 0, 211, .09);
+    color: #240090;
+}
+
+.sidebar-toggle:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+/* A small Credits link under the Collapse button */
+.sidebar-credits
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 12px 14px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #7a7a8c;
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: 10px;
+    transition: color .2s ease, background-color .2s ease;
+}
+
+.sidebar-credits i
+{
+    flex: none;
+    width: 28px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.sidebar-credits span
+{
+    max-width: 160px;
+    overflow: hidden;
+    transition: max-width .25s ease, opacity .15s ease;
+}
+
+.sidebar-credits:hover,
+.sidebar-credits:focus-visible
+{
+    color: #240090;
+    background-color: rgba(53, 0, 211, .07);
+}
+
+.sidebar-credits:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.sidebar-collapsed .sidebar-credits
+{
+    justify-content: center;
+    gap: 0;
+    padding: 6px 0;
+}
+
+.sidebar-collapsed .sidebar-credits span
+{
+    max-width: 0;
+    opacity: 0;
+}
+
+/* The copyright line under the Credits link. It is hidden when the sidebar is collapsed to icons only. */
+.sidebar-copyright
+{
+    flex: none;
+    margin: -8px 12px 14px;
+    padding: 0 14px;
+    font-size: 11px;
+    line-height: 1.3;
+    color: #6b6b7c;
+    white-space: nowrap;
+}
+
+.sidebar-collapsed .sidebar-copyright
+{
+    display: none;
+}
+
+/* Collapsed: icon only, and the arrows flip to point the other way */
+.sidebar-collapsed .sidebar-toggle
+{
+    justify-content: center;
+    gap: 0;
+    padding: 12px 0;
+}
+
+.sidebar-collapsed .sidebar-toggle i
+{
+    transform: rotate(180deg);
+}
+
+.sidebar-collapsed .sidebar-toggle span
+{
+    max-width: 0;
+    opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+    .sidebar-menu,
+    .logo img,
+    .menu li a span,
+    .sidebar-toggle,
+    .sidebar-toggle i,
+    .sidebar-toggle span,
+    .page-content-feed,
+    .page-content-challenge,
+    #usrMsgBar
+    {
+        transition: none;
+    }
+
+    .menu li a,
+    .menu li a > *
+    {
+        transition: none;
+    }
+
+    .menu li a:hover > *,
+    .menu li a:focus-visible > *
+    {
+        transform: none;
+    }
+}
+
+/* FeedPage content styling*/
+
+#feedHeader
+{
+    margin-bottom: 300px;
+}
+.page-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+/* Styles for the sidebar stories and its contents*/
+.sidebar-stories
+{
+    width: 300px;
+    background-color: #F7FAFC;
+    box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+    height: 100%;
+    position: fixed;
+    right: 0;
+    top: 0;
+    padding-top: 20px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+/* Stories heading row: the title on the left, "See all" on the right */
+.stories-header
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px 0 24px;
+    margin-bottom: 18px;
+}
+
+.stories-header h1
+{
+    margin: 0;
+    font-size: 20px;
+}
+
+.stories-see-all
+{
+    padding: 4px 6px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: bold;
+    color: #240090;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.stories-see-all:hover
+{
+    background-color: rgba(53, 0, 211, .09);
+    text-decoration: underline;
+}
+
+.stories-see-all:focus-visible,
+.story:focus-visible,
+.story-nav:focus-visible,
+.story-icon-btn:focus-visible,
+.stories-all-close:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+/* The story circles: a purple ring means unwatched, a grey ring means watched */
+.stories-grid
+{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px 6px;
+    padding: 0 16px;
+    margin-bottom: 20px;
+}
+
+.story
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 4px 0;
+    font-family: inherit;
+    background: none;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+}
+
+.story-ring
+{
+    display: block;
+    width: 72px;
+    height: 72px;
+    padding: 3px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3500D3, #a77bff);
+    transition: transform .2s ease;
+}
+
+.story-ring.seen
+{
+    background: #cfd4dc;
+}
+
+.story-avatar
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 3px solid #F7FAFC;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.story:hover .story-ring,
+.story:focus-visible .story-ring
+{
+    transform: scale(1.06);
+}
+
+.story-name
+{
+    max-width: 84px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    color: #282828;
+}
+
+/* Quote of the day: a purple card sitting directly under the stories, lined up with their left edge */
+#quoteBox
+{
+    margin: 0 16px 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e0f7;
+}
+
+#quoteBox h2
+{
+    margin: 0 0 12px 8px;
+    font-size: 16px;
+    color: #282828;
+}
+
+#quote
+{
+    position: relative;
+    margin: 0;
+    padding: 18px 18px 16px;
+    color: #fff;
+    background: linear-gradient(135deg, #240090, #3500D3);
+    border-radius: 18px;
+    box-shadow: 0 4px 14px rgba(36, 0, 144, .25);
+}
+
+#quote i
+{
+    display: block;
+    margin-bottom: 4px;
+    font-size: 26px;
+    color: rgba(255, 255, 255, .45);
+}
+
+#quote p
+{
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.5;
+    text-align: left;
+}
+
+#quote footer
+{
+    font-size: 12px;
+    font-weight: bold;
+    text-align: right;
+}
+
+#quote footer::before
+{
+    content: "\2014\00a0";
+}
+
+/* Styles for header of feed page */
+/* The header spans the same width as the post grid, so the title and search bar line up with its edges
+   and the title moves with the page when the sidebar collapses */
+#feedHeader,
+#challengeHeader,
+#profileHeader
+{
+    position: absolute;
+    left: calc(var(--sidebar-width) + 24px);
+    justify-content: space-between;
+    align-items: flex-start;
+    transition: left .25s ease;
+}
+
+/* The feed leaves room for the stories panel on the right; the challenge page doesn't have one */
+#feedHeader
+{
+    right: 324px;
+}
+
+#challengeHeader,
+#profileHeader
+{
+    right: 24px;
+}
+
+#feedHeader h1,
+#feedHeader form,
+#challengeHeader h1,
+#challengeHeader form,
+#profileHeader h1,
+#profileHeader form
+{
+    margin-right: 0;
+}
+
+/* The feed's filter bar: tabs (whose posts) on the left, the sort menu on the right. It is as wide as the post grid. */
+#feedControls
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px 0 0;
+    margin: 0 0 24px;
+}
+
+#feedTabs
+{
+    display: flex;
+    gap: 24px;
+}
+
+.feed-sort
+{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #5b5b5b;
+}
+
+.feed-sort select
+{
+    height: 36px;
+    padding: 0 30px 0 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #240090;
+    background: #fff;
+    border: 1px solid #cfc8ee;
+    border-radius: 18px;
+    cursor: pointer;
+}
+
+.feed-sort select:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+/* The filter buttons: the current one is bold purple with an underline */
+.filter-btn
+{
+    padding: 4px 2px 6px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #A5B4C3;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color .2s ease, border-color .2s ease;
+}
+
+.filter-btn:hover
+{
+    color: #240090;
+}
+
+.filter-btn.active
+{
+    font-weight: bold;
+    color: #240090;
+    border-bottom-color: #3500D3;
+}
+
+.filter-btn:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Shown when a filter has no posts */
+.feed-empty
+{
+    width: 100%;
+    margin: 60px 0;
+    font-size: 15px;
+    text-align: center;
+    color: #5b5b5b;
+}
+
+/* Styles for the content section of feed page */
+.page-content-feed 
+{
+    min-height: 100vh;
+    margin-top: 100px;
+    margin-left: var(--sidebar-width);
+    margin-right: 300px;
+    padding: 0 24px 40px;
+    box-sizing: border-box;
+    transition: margin-left .25s ease;
+}
+
+.row
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.feed-underPost img, p
+{
+   margin-right: 5px;
+}
+
+.bx-comment-dots
+{
+    color: #190061;
+}
+
+.bx-comment-dots:hover
+{
+    color: #889FB6;
+    cursor: pointer;
+}
+
+/* Styles for adding a stroke to heart and bookmark icons */
+.bxs-heart, .bxs-bookmark 
+{
+  -webkit-text-stroke: 2px #190061;
+  -webkit-text-fill-color: white;
+}
+.bxs-heart:hover, .bxs-bookmark:hover
+{
+  -webkit-text-stroke: 2px #889FB6;
+  -webkit-text-fill-color: white;
+  cursor: pointer;
+}
+
+
+/* DailyChallenge page content styling*/
+
+header h1
+{
+    margin-right: 600px;
+    color: #240090;
+}
+
+/* Styles for the add post button */
+.challenge-toolbar
+{
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+    margin-bottom: 24px;
+}
+
+#addPostBtn
+{
+    height: 40px;
+    padding: 0 22px;
+    background: #240090;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 1px 4px rgba(36, 0, 144, .25);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    transition: background-color .2s ease;
+}
+
+#addPostBtn:hover
+{
+    background: #190061;
+}
+
+#addPostBtn:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+/* Styles for the challenge page content: the same grid as the feed, without the stories panel */
+.page-content-challenge
+{
+    min-height: 100vh;
+    margin-top: 100px;
+    margin-left: var(--sidebar-width);
+    padding: 0 24px 40px;
+    box-sizing: border-box;
+    transition: margin-left .25s ease;
+}
+
+/* Profile page content styling*/
+
+/* Styles for the profile page main content*/
+header
+{
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    display: flex;
+}
+
+header form
+{
+    border: 2px solid #3500D3;
+    border-radius: 30px;
+    padding: 0;
+    width: 200px;
+    height: 30px;
+    margin-right: 150px;
+}
+
+/* One focus ring around the whole search bar, instead of a second outline inside it */
+header input:focus
+{
+    outline: none;
+}
+
+header form:focus-within
+{
+    border-color: #240090;
+    box-shadow: 0 0 0 3px rgba(53, 0, 211, .25);
+}
+
+header input
+{
+    border: 0;
+    border-radius: 45px;
+    width:150px;
+    margin: 5px;
+    padding: 3px;
+}
+
+header i
+{
+    color: #3500D3;
+}
+
+/* ---------- Messages page ---------- */
+
+/* The page fills everything to the right of the sidebar: conversation list on the left, open chat on the right */
+.messages-page
+{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    display: flex;
+    background: #fff;
+    transition: left .25s ease;
+}
+
+/* ----- Conversation list ----- */
+.conversations
+{
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    box-sizing: border-box;
+    background: #faf9ff;
+    border-right: 1px solid #e5e0f7;
+}
+
+.conversations-header
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 20px 12px 24px;
+}
+
+.conversations-header h1
+{
+    margin: 0;
+    font-size: 26px;
+    color: #240090;
+}
+
+.conversation-search
+{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 42px;
+    margin: 4px 20px 14px;
+    padding: 0 14px;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #d9d2f5;
+    border-radius: 30px;
+    color: #3500D3;
+}
+
+.conversation-search:focus-within
+{
+    border-color: #240090;
+    box-shadow: 0 0 0 3px rgba(53, 0, 211, .2);
+}
+
+.conversation-search input
+{
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: none;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.conversation-list
+{
+    flex: 1;
+    margin: 0;
+    padding: 0 10px 16px;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.conversation
+{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    font-family: inherit;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+.conversation:hover
+{
+    background-color: rgba(53, 0, 211, .06);
+}
+
+.conversation.active
+{
+    background-color: #ece6ff;
+}
+
+.conversation:focus-visible,
+.send-btn:focus-visible,
+.chat-messages:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.avatar-wrap
+{
+    position: relative;
+    flex: none;
+    display: block;
+}
+
+.avatar-wrap img
+{
+    display: block;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.online-dot
+{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    background: #2ecc71;
+    border: 2px solid #faf9ff;
+    border-radius: 50%;
+}
+
+.conversation.active .online-dot
+{
+    border-color: #ece6ff;
+}
+
+.conversation-text
+{
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.conversation-top,
+.conversation-bottom
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.conversation-name
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 15px;
+    font-weight: bold;
+    color: #282828;
+}
+
+.conversation-time
+{
+    flex: none;
+    font-size: 12px;
+    color: #7a7a8c;
+}
+
+.conversation-preview
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    color: #5b5b5b;
+}
+
+.unread-badge
+{
+    flex: none;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    background: #3500D3;
+    border-radius: 10px;
+}
+
+/* Headings and notes inside the list while searching */
+.list-heading
+{
+    padding: 14px 12px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #7a7a8c;
+}
+
+.list-note
+{
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #5b5b5b;
+}
+
+/* ----- Open chat ----- */
+.chat
+{
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header
+{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 28px;
+    border-bottom: 1px solid #e5e0f7;
+}
+
+.chat-header .online-dot
+{
+    border-color: #fff;
+}
+
+.chat-title
+{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.chat-name
+{
+    font-size: 17px;
+    font-weight: bold;
+    color: #240090;
+}
+
+.chat-status
+{
+    font-size: 12px;
+    color: #5b5b5b;
+}
+
+.chat-messages
+{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px 28px;
+    overflow-y: auto;
+    background: #fbfaff;
+}
+
+.day-divider
+{
+    display: flex;
+    justify-content: center;
+    margin: 4px 0 8px;
+}
+
+.day-divider span
+{
+    padding: 4px 14px;
+    font-size: 12px;
+    color: #5b5b5b;
+    background: #ece6ff;
+    border-radius: 20px;
+}
+
+.bubble-row
+{
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.bubble-row.outgoing
+{
+    justify-content: flex-end;
+}
+
+.bubble-avatar
+{
+    flex: none;
+    border-radius: 50%;
+}
+
+.bubble
+{
+    max-width: min(560px, 70%);
+    padding: 10px 14px 6px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}
+
+.bubble p
+{
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.bubble-time
+{
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    text-align: right;
+    opacity: .7;
+}
+
+.incoming .bubble
+{
+    color: #282828;
+    background: #fff;
+    border: 1px solid #e5e0f7;
+    border-bottom-left-radius: 6px;
+}
+
+.outgoing .bubble
+{
+    color: #fff;
+    background: linear-gradient(135deg, #240090, #3500D3);
+    border-bottom-right-radius: 6px;
+}
+
+/* A new conversation with no messages yet */
+.chat-empty
+{
+    margin: auto;
+    padding: 0 20px;
+    font-size: 15px;
+    text-align: center;
+    color: #5b5b5b;
+}
+
+/* ----- Message box ----- */
+.composer
+{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 28px;
+    border-top: 1px solid #e5e0f7;
+    background: #fff;
+}
+
+.composer input
+{
+    flex: 1;
+    min-width: 0;
+    height: 46px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 15px;
+    border: 1px solid #3500D3;
+    border-radius: 30px;
+}
+
+.composer input:focus
+{
+    outline: none;
+    border-color: #240090;
+    box-shadow: 0 0 0 3px rgba(53, 0, 211, .25);
+}
+
+.send-btn
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+    color: #fff;
+    background: #240090;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+.send-btn:hover
+{
+    background: #190061;
+}
+
+/* Narrow windows: the conversation list shrinks to just the pictures */
+@media (max-width: 900px)
+{
+    .conversations
+    {
+        width: 84px;
+    }
+
+    .conversations-header h1,
+    .conversation-search,
+    .conversation-text
+    {
+        display: none;
+    }
+
+    .conversations-header
+    {
+        justify-content: center;
+        padding: 20px 0 12px;
+    }
+
+    .conversation
+    {
+        justify-content: center;
+    }
+
+    .bubble
+    {
+        max-width: 85%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+    .messages-page,
+    .conversation,
+    .send-btn
+    {
+        transition: none;
+    }
+}
+
+/* ---------- Create new post pop-up ---------- */
+.overlayModal
+{
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal
+{
+    position: fixed;
+    z-index: 1010;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    width: min(840px, calc(100vw - 32px));
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    padding: 24px 28px 28px;
+    background-color: #282828;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .45);
+}
+
+.modal h2
+{
+    margin: 0 0 20px;
+    font-size: 22px;
+    text-align: center;
+    color: #fff;
+}
+
+.create-close
+{
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    padding: 4px;
+    font-size: 26px;
+    color: #fff;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.create-close:hover
+{
+    background: rgba(255, 255, 255, .15);
+}
+
+.create-close:focus-visible,
+.upload-remove:focus-visible,
+#postBtn:focus-visible,
+.file-input:focus-visible + .upload-drop
+{
+    outline: 2px solid #a77bff;
+    outline-offset: 2px;
+}
+
+.create-container
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* ----- Picture area (left) ----- */
+.upload-card,
+#captionContainer
+{
+    box-sizing: border-box;
+    height: 400px;
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+.upload-card
+{
+    position: relative;
+    padding: 16px;
+}
+
+.file-input
+{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* The whole area is the "button": click anywhere in it, or drop a photo on it */
+.upload-drop
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    text-align: center;
+    background: #faf9ff;
+    border: 2px dashed #b9a8f0;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background-color .2s ease, border-color .2s ease;
+}
+
+.upload-drop[hidden]
+{
+    display: none;
+}
+
+.upload-drop:hover,
+.upload-drop.dragging
+{
+    background: #ece6ff;
+    border-color: #3500D3;
+}
+
+.upload-drop img
+{
+    width: 120px;
+    height: 120px;
+    margin-bottom: 6px;
+    object-fit: contain;
+}
+
+.upload-title
+{
+    font-size: 16px;
+    font-weight: bold;
+    color: #240090;
+}
+
+.upload-hint
+{
+    font-size: 12px;
+    line-height: 1.5;
+    color: #5b5b5b;
+}
+
+.upload-error
+{
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 22px;
+    margin: 0;
+    font-size: 13px;
+    text-align: center;
+    color: #C62828;
+}
+
+.upload-error:empty
+{
+    display: none;
+}
+
+/* The chosen picture */
+.upload-preview
+{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.upload-preview[hidden]
+{
+    display: none;
+}
+
+.upload-preview img
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.upload-remove
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    padding: 4px;
+    font-size: 22px;
+    color: #fff;
+    background: rgba(0, 0, 0, .6);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.upload-remove:hover
+{
+    background: rgba(0, 0, 0, .8);
+}
+
+/* ----- Caption area (right) ----- */
+#captionContainer
+{
+    display: flex;
+    flex-direction: column;
+    padding: 18px 20px 16px;
+}
+
+.caption-user-details
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.caption-user-details img
+{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.caption-user-details p
+{
+    margin: 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: #240090;
+}
+
+#captionContainer textarea
+{
+    flex: 1;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #282828;
+    resize: none;
+    border: 1px solid #d9d2f5;
+    border-radius: 14px;
+}
+
+#captionContainer textarea:focus
+{
+    outline: none;
+    border-color: #240090;
+    box-shadow: 0 0 0 3px rgba(53, 0, 211, .22);
+}
+
+.caption-footer
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+#captionCount
+{
+    font-size: 12px;
+    color: #7a7a8c;
+}
+
+#postBtn
+{
+    height: 40px;
+    padding: 0 28px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #3500D3;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+#postBtn:hover:not(:disabled)
+{
+    background-color: #240090;
+}
+
+#postBtn:disabled
+{
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+@media (max-width: 700px)
+{
+    .create-container
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .upload-card,
+    #captionContainer
+    {
+        height: 320px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+    .upload-drop,
+    #postBtn
+    {
+        transition: none;
+    }
+}
+
+/* ---------- Notifications panel ---------- */
+.notification-modal
+{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: var(--sidebar-width);
+    width: 400px;
+    max-width: calc(100vw - var(--sidebar-width));
+    display: none;
+    overflow-y: auto;
+    background: #fff;
+    border-right: 1px solid #e5e0f7;
+    box-shadow: 6px 0 24px rgba(36, 0, 144, .12);
+    z-index: 999;
+    animation: notif-slide .25s ease-out;
+    /* A slim, very soft purple scrollbar that barely shows */
+    scrollbar-width: thin;
+    scrollbar-color: #ddd5f7 transparent;
+}
+
+/* Older browsers that only understand the WebKit scrollbar rules */
+@supports not (scrollbar-color: auto)
+{
+    .notification-modal::-webkit-scrollbar
+    {
+        width: 8px;
+    }
+
+    .notification-modal::-webkit-scrollbar-track
+    {
+        background: transparent;
+    }
+
+    .notification-modal::-webkit-scrollbar-thumb
+    {
+        background: #ddd5f7;
+        border-radius: 8px;
+    }
+
+    .notification-modal::-webkit-scrollbar-thumb:hover
+    {
+        background: #c9bdf2;
+    }
+}
+
+@keyframes notif-slide
+{
+    from
+    {
+        opacity: 0;
+        transform: translateX(-16px);
+    }
+
+    to
+    {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.notification-content
+{
+    padding: 0 0 24px;
+}
+
+.notif-header
+{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 20px 14px 24px;
+    background: #fff;
+    border-bottom: 1px solid #e5e0f7;
+}
+
+.notif-header h2
+{
+    flex: 1;
+    margin: 0;
+    font-size: 22px;
+    color: #240090;
+}
+
+.notif-mark-read
+{
+    padding: 6px 8px;
+    white-space: nowrap;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: bold;
+    color: #3500D3;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.notif-mark-read:hover:not(:disabled)
+{
+    background-color: rgba(53, 0, 211, .09);
+}
+
+.notif-mark-read:disabled
+{
+    color: #a5a5b8;
+    cursor: default;
+}
+
+.notif-close
+{
+    display: flex;
+    padding: 4px;
+    font-size: 26px;
+    color: #240090;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.notif-close:hover
+{
+    background-color: rgba(53, 0, 211, .09);
+}
+
+.notif-close:focus-visible,
+.notif-mark-read:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.notif-section
+{
+    margin: 0;
+    padding: 18px 24px 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #7a7a8c;
+}
+
+/* The list of notifications */
+.notifs
+{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.notif
+{
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 24px;
+    cursor: default;
+    transition: background-color .2s ease;
+}
+
+.notif:hover
+{
+    background-color: #faf9ff;
+}
+
+/* Unread: a soft purple tint and a dot */
+.notif.unread
+{
+    background-color: #f3efff;
+}
+
+.notif.unread:hover
+{
+    background-color: #ece6ff;
+}
+
+.notif-dot
+{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 8px;
+    height: 8px;
+    transform: translateY(-50%);
+    background: #3500D3;
+    border-radius: 50%;
+}
+
+.notif-avatar
+{
+    position: relative;
+    flex: none;
+    width: 44px;
+    height: 44px;
+}
+
+.notif-avatar img
+{
+    display: block;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.notif-avatar-system
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #f57c00;
+    background: #fff3e0;
+    border-radius: 50%;
+}
+
+/* A small icon on the corner of the picture says what kind of notification it is */
+.notif-kind
+{
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.notif-body
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.notif-text
+{
+    margin: 0 0 2px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #282828;
+}
+
+.notif-quote
+{
+    color: #5b5b5b;
+}
+
+.notif-time
+{
+    font-size: 12px;
+    color: #7a7a8c;
+}
+
+.notif-actions
+{
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.notif-thumb
+{
+    flex: none;
+    margin-right: 10px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.notif-empty
+{
+    margin: 60px 24px;
+    font-size: 14px;
+    text-align: center;
+    color: #5b5b5b;
+}
+
+/* The unread count on the sidebar's Notifications link */
+.nav-badge
+{
+    margin-left: auto;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    box-sizing: border-box;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    background: #D81B60;
+    border-radius: 10px;
+}
+
+.menu li a
+{
+    position: relative;
+}
+
+/* Collapsed sidebar: the count sits on the corner of the bell */
+.sidebar-collapsed .nav-badge
+{
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    font-size: 10px;
+    line-height: 16px;
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+    .notification-modal
+    {
+        animation: none;
+    }
+
+    .notif
+    {
+        transition: none;
+    }
+}
+
+/* ---------- User search results ---------- */
+.search-form
+{
+    position: relative;
+}
+
+.search-results
+{
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 60;
+    width: 320px;
+    max-height: 360px;
+    overflow-y: auto;
+    padding: 6px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(36, 0, 144, .2);
+}
+
+.search-results[hidden]
+{
+    display: none;
+}
+
+.search-result
+{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: 12px;
+}
+
+.search-result:hover
+{
+    background-color: rgba(53, 0, 211, .07);
+}
+
+.search-avatar
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #240090;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.search-info
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.search-name
+{
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: bold;
+    color: #282828;
+}
+
+.search-username
+{
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+    color: #5b5b5b;
+}
+
+.follow-btn
+{
+    flex: none;
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #240090;
+    border: 2px solid #240090;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.follow-btn:hover
+{
+    background-color: #190061;
+    border-color: #190061;
+}
+
+/* Already following: an outlined button */
+.follow-btn.following
+{
+    color: #240090;
+    background-color: transparent;
+}
+
+.follow-btn.following:hover
+{
+    background-color: rgba(53, 0, 211, .09);
+}
+
+.follow-btn:disabled
+{
+    opacity: .6;
+    cursor: default;
+}
+
+.follow-btn:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.search-message
+{
+    margin: 0;
+    padding: 14px 12px;
+    font-size: 13px;
+    text-align: center;
+    color: #5b5b5b;
+}
+
+.search-message a
+{
+    color: #240090;
+    font-weight: bold;
+}
+
+
+/* ---------- Feed: Pinterest-style grid ---------- */
+
+/* The grid is a row of columns that feed.js fills, newest post first, always into the shortest column */
+.masonry
+{
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.masonry-column
+{
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pin
+{
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 18px;
+    background: #eee;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.pin img
+{
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform .3s ease;
+}
+
+/* Hover (or keyboard focus): the picture zooms slightly and a dark fade shows the username */
+.pin-overlay
+{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 14px;
+    background: linear-gradient(to top, rgba(25, 0, 97, .75), rgba(25, 0, 97, 0) 55%);
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+
+.pin-username
+{
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pin:hover img,
+.pin:focus-visible img
+{
+    transform: scale(1.04);
+}
+
+.pin:hover .pin-overlay,
+.pin:focus-visible .pin-overlay
+{
+    opacity: 1;
+}
+
+.pin:focus-visible
+{
+    outline: 3px solid #3500D3;
+    outline-offset: 2px;
+}
+
+/* Touch screens can't hover, so the username is always shown there */
+@media (hover: none)
+{
+    .pin-overlay
+    {
+        opacity: 1;
+    }
+}
+
+/* ---------- Post pop-up ---------- */
+body.modal-open
+{
+    overflow: hidden;
+}
+
+.post-modal
+{
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(25, 0, 97, .6);
+    animation: post-fade .2s ease-out;
+}
+
+.post-card
+{
+    position: relative;
+    display: flex;
+    width: min(980px, 100%);
+    height: min(640px, 100%);
+    overflow: hidden;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .35);
+}
+
+.post-picture
+{
+    flex: 1 1 55%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    background: #eee;
+}
+
+.post-picture img
+{
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.post-details
+{
+    flex: 1 1 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+    padding: 28px 24px 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.post-close
+{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    display: flex;
+    padding: 4px;
+    font-size: 26px;
+    color: #240090;
+    background: rgba(255, 255, 255, .9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.post-close:focus-visible,
+.post-action:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.post-author
+{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 36px;
+}
+
+.post-avatar
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #240090;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.post-names
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.post-name
+{
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    color: #282828;
+}
+
+.post-handle,
+.post-time
+{
+    font-size: 12px;
+    color: #5b5b5b;
+}
+
+.post-handle
+{
+    display: block;
+}
+
+.post-caption
+{
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #282828;
+}
+
+.post-tags
+{
+    margin: 0;
+    font-size: 14px;
+    color: #3500D3;
+}
+
+.post-actions
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.post-action
+{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    font-family: inherit;
+    font-size: 14px;
+    color: #240090;
+    background: none;
+    border: none;
+}
+
+.post-action i
+{
+    font-size: 26px;
+}
+
+button.post-action
+{
+    cursor: pointer;
+}
+
+.post-save
+{
+    margin-left: auto;
+}
+
+/* The feed's older heart/bookmark rule draws solid icons with a white fill and an outline, which hides the filled
+   look. Inside the post pop-up the icons use their normal colour instead, so liked and saved are clearly visible. */
+.post-action i
+{
+    -webkit-text-stroke: 0;
+    -webkit-text-fill-color: currentColor;
+    transition: color .2s ease;
+}
+
+button.post-action:hover
+{
+    color: #3500D3;
+}
+
+/* Liked: a solid pink heart and count. Saved: a solid purple bookmark. */
+.post-like.active,
+.post-like.active:hover
+{
+    color: #D81B60;
+}
+
+.post-save.active,
+.post-save.active:hover
+{
+    color: #3500D3;
+}
+
+.post-action.active i
+{
+    animation: post-pop .3s ease;
+}
+
+@keyframes post-pop
+{
+    0%
+    {
+        transform: scale(1);
+    }
+
+    50%
+    {
+        transform: scale(1.3);
+    }
+
+    100%
+    {
+        transform: scale(1);
+    }
+}
+
+.post-comments
+{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid #e5e0f7;
+    overflow-y: auto;
+}
+
+.post-comment
+{
+    margin: 0;
+    font-size: 14px;
+    color: #282828;
+}
+
+.post-comment-input
+{
+    height: 42px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
+    border: 1px solid #3500D3;
+    border-radius: 30px;
+}
+
+.post-comment-input:focus
+{
+    outline: none;
+    border-color: #240090;
+    box-shadow: 0 0 0 3px rgba(53, 0, 211, .25);
+}
+
+@keyframes post-fade
+{
+    from
+    {
+        opacity: 0;
+    }
+
+    to
+    {
+        opacity: 1;
+    }
+}
+
+/* Narrow screens: picture on top, details underneath */
+@media (max-width: 800px)
+{
+    .post-card
+    {
+        flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .post-picture
+    {
+        flex: none;
+        max-height: 45vh;
+    }
+
+    .post-details
+    {
+        flex: none;
+        overflow: visible;
+    }
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+    .pin img,
+    .pin-overlay
+    {
+        transition: none;
+    }
+
+    .pin:hover img,
+    .pin:focus-visible img
+    {
+        transform: none;
+    }
+
+    .post-modal,
+    .post-action.active i
+    {
+        animation: none;
+    }
+}
+
+
+/* ---------- "See all" list ---------- */
+.stories-all
+{
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(25, 0, 97, .6);
+}
+
+.stories-all-card
+{
+    position: relative;
+    width: min(520px, 100%);
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 24px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .35);
+}
+
+.stories-all-card h2
+{
+    margin: 0 0 20px;
+    font-size: 22px;
+    color: #240090;
+}
+
+.stories-all-close
+{
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    padding: 4px;
+    font-size: 26px;
+    color: #240090;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.stories-all-grid
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 18px 8px;
+}
+
+.stories-all .story-avatar
+{
+    border-color: #fff;
+}
+
+/* ---------- Story viewer ---------- */
+.story-viewer
+{
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(10, 0, 45, .92);
+}
+
+.story-card
+{
+    position: relative;
+    height: min(100%, 780px);
+    aspect-ratio: 9 / 16;
+    max-width: 100%;
+    overflow: hidden;
+    background: #111;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .5);
+}
+
+.story-image
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* A dark fade at the top keeps the white text readable on any picture */
+.story-card::before
+{
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .55), rgba(0, 0, 0, 0));
+    pointer-events: none;
+    z-index: 1;
+}
+
+.story-progress
+{
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    z-index: 2;
+    height: 3px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, .35);
+}
+
+.story-progress-bar
+{
+    display: block;
+    width: 0;
+    height: 100%;
+    background: #fff;
+}
+
+/* The bar fills over the story's time, and the story moves on when the animation ends */
+.story-progress-bar.running
+{
+    animation: story-progress 5s linear forwards;
+}
+
+.story-viewer.paused .story-progress-bar
+{
+    animation-play-state: paused;
+}
+
+@keyframes story-progress
+{
+    from
+    {
+        width: 0;
+    }
+
+    to
+    {
+        width: 100%;
+    }
+}
+
+.story-header
+{
+    position: absolute;
+    top: 24px;
+    left: 12px;
+    right: 12px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+}
+
+.story-header-avatar
+{
+    width: 36px;
+    height: 36px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.story-header-names
+{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: 12px;
+}
+
+.story-header-names b
+{
+    font-size: 14px;
+}
+
+.story-icon-btn
+{
+    display: flex;
+    padding: 4px;
+    font-size: 24px;
+    color: #fff;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.story-nav
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    font-size: 30px;
+    color: #240090;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.story-nav:hover:not(:disabled)
+{
+    transform: scale(1.08);
+}
+
+/* No story in that direction: the arrow is greyed out and can't be used */
+.story-nav:disabled
+{
+    opacity: .25;
+    cursor: not-allowed;
+}
+
+@media (max-width: 700px)
+{
+    .story-viewer
+    {
+        gap: 0;
+        padding: 0;
+    }
+
+    .story-card
+    {
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .story-nav
+    {
+        position: absolute;
+        top: 50%;
+        z-index: 3;
+        width: 40px;
+        height: 40px;
+        transform: translateY(-50%);
+    }
+
+    .story-prev
+    {
+        left: 8px;
+    }
+
+    .story-next
+    {
+        right: 8px;
+    }
+}
+
+/* With reduced motion the countdown is switched off: the bar just shows full and stories change by hand */
+@media (prefers-reduced-motion: reduce)
+{
+    .story-progress-bar.running
+    {
+        animation: none;
+        width: 100%;
+    }
+
+    .story-ring,
+    .story-nav
+    {
+        transition: none;
+    }
+}
+
+/* ---------- Profile page ---------- */
+.profile-page
+{
+    min-height: 100vh;
+    margin-top: 130px;
+    margin-left: var(--sidebar-width);
+    padding: 0 24px 40px;
+    box-sizing: border-box;
+    transition: margin-left .25s ease;
+}
+
+.profile-loading
+{
+    margin: 80px 0;
+    font-size: 15px;
+    text-align: center;
+    color: #5b5b5b;
+}
+
+.profile-loading a
+{
+    color: #240090;
+    font-weight: bold;
+}
+
+.profile-card
+{
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    background: #faf9ff;
+    border: 1px solid #e5e0f7;
+    border-radius: 24px;
+}
+
+/* The profile picture always has a soft glow. The purple ring only appears when you have a story. */
+.profile-avatar
+{
+    flex: none;
+    display: block;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(53, 0, 211, .18);
+    font: inherit;
+}
+
+.profile-avatar img
+{
+    display: block;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-avatar.has-story
+{
+    padding: 4px;
+    background: linear-gradient(135deg, #3500D3, #a77bff);
+    cursor: pointer;
+}
+
+.profile-avatar.has-story img
+{
+    border: 4px solid #faf9ff;
+}
+
+.profile-avatar.has-story:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 4px;
+}
+
+.profile-main
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-title-row
+{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-name
+{
+    margin: 0;
+    font-size: 28px;
+    color: #240090;
+}
+
+.profile-privacy
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #240090;
+    background: #ece6ff;
+    border-radius: 20px;
+}
+
+.profile-handle
+{
+    margin: 2px 0 12px;
+    font-size: 15px;
+    color: #5b5b5b;
+}
+
+.profile-bio
+{
+    max-width: 560px;
+    margin: 0 0 14px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #282828;
+}
+
+.profile-bio-empty
+{
+    font-style: italic;
+    color: #7a7a8c;
+}
+
+.profile-details
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 18px;
+    padding: 0;
+    list-style: none;
+}
+
+.profile-chip
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: #240090;
+    background: #fff;
+    border: 1px solid #e5e0f7;
+    border-radius: 20px;
+}
+
+.profile-chip i
+{
+    font-size: 16px;
+    color: #3500D3;
+}
+
+.profile-stats
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 36px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.profile-stats li
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-stats b
+{
+    font-size: 20px;
+    color: #240090;
+}
+
+.profile-stats span
+{
+    font-size: 12px;
+    color: #5b5b5b;
+}
+
+.profile-actions
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-settings-btn
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    color: #240090;
+    background: #fff;
+    border: 1px solid #d9d2f5;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+.profile-settings-btn:hover
+{
+    background: #ece6ff;
+}
+
+.profile-settings-btn:focus-visible,
+.profile-tab:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.profile-tabs
+{
+    display: flex;
+    gap: 28px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e5e0f7;
+}
+
+.profile-tab
+{
+    padding: 8px 2px 10px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #A5B4C3;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color .2s ease, border-color .2s ease;
+}
+
+.profile-tab:hover
+{
+    color: #240090;
+}
+
+.profile-tab.active
+{
+    font-weight: bold;
+    color: #240090;
+    border-bottom-color: #3500D3;
+}
+
+@media (max-width: 900px)
+{
+    .profile-card
+    {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-title-row,
+    .profile-details,
+    .profile-stats
+    {
+        justify-content: center;
+    }
+}
+
+/* ---------- Settings pop-up ---------- */
+.settings-modal
+{
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(25, 0, 97, .6);
+}
+
+.settings-card
+{
+    position: relative;
+    display: flex;
+    width: min(840px, 100%);
+    height: min(640px, 100%);
+    overflow: hidden;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .35);
+}
+
+.settings-nav
+{
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 220px;
+    padding: 28px 14px;
+    box-sizing: border-box;
+    background: #faf9ff;
+    border-right: 1px solid #e5e0f7;
+}
+
+.settings-nav h2
+{
+    margin: 0 0 14px 10px;
+    font-size: 22px;
+    color: #240090;
+}
+
+.settings-tab
+{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    font-family: inherit;
+    font-size: 15px;
+    text-align: left;
+    color: #282828;
+    background: none;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.settings-tab i
+{
+    font-size: 20px;
+    color: #5b5b5b;
+}
+
+.settings-tab:hover
+{
+    background: rgba(53, 0, 211, .07);
+}
+
+.settings-tab.active
+{
+    font-weight: bold;
+    color: #240090;
+    background: #ece6ff;
+}
+
+.settings-tab.active i
+{
+    color: #3500D3;
+}
+
+.settings-panel
+{
+    flex: 1;
+    min-width: 0;
+    padding: 32px;
+    overflow-y: auto;
+}
+
+.settings-panel h3
+{
+    margin: 0 0 20px;
+    font-size: 20px;
+    color: #240090;
+}
+
+.settings-close
+{
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 1;
+    display: flex;
+    padding: 4px;
+    font-size: 26px;
+    color: #240090;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.settings-close:hover
+{
+    background: rgba(53, 0, 211, .09);
+}
+
+.settings-close:focus-visible,
+.settings-tab:focus-visible,
+.settings-save:focus-visible,
+.settings-logout:focus-visible,
+.switch input:focus-visible + .switch-track
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.settings-row
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+}
+
+.settings-field
+{
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.settings-field label
+{
+    display: block;
+    margin: 0 0 6px 4px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #240090;
+}
+
+.settings-field input,
+.settings-field select,
+.settings-field textarea
+{
+    display: block;
+    width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 15px;
+    color: #282828;
+    background: #fff;
+    border: 1px solid #c9bdf2;
+    border-radius: 14px;
+}
+
+.settings-field input,
+.settings-field select
+{
+    height: 44px;
+    box-shadow: none;
+}
+
+.settings-field textarea
+{
+    padding: 12px 16px;
+    line-height: 1.4;
+    resize: none;
+}
+
+.settings-field input:disabled
+{
+    color: #5b5b5b;
+    background: #f5f3fc;
+}
+
+.settings-field input:focus,
+.settings-field select:focus,
+.settings-field textarea:focus,
+.settings-prefixed:focus-within
+{
+    outline: none;
+    border-color: #240090;
+    box-shadow: 0 0 0 3px rgba(53, 0, 211, .22);
+}
+
+.settings-field .invalid,
+.settings-field .invalid:focus,
+.settings-prefixed:has(.invalid)
+{
+    border-color: #C62828;
+}
+
+/* The "@" in front of the username box */
+.settings-prefixed
+{
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #c9bdf2;
+    border-radius: 14px;
+}
+
+.settings-prefixed span
+{
+    padding-left: 16px;
+    color: #5b5b5b;
+}
+
+.settings-prefixed input
+{
+    border: none;
+    border-radius: 14px;
+    padding-left: 4px;
+    box-shadow: none;
+}
+
+.settings-prefixed input:focus
+{
+    box-shadow: none;
+}
+
+.settings-count
+{
+    display: block;
+    margin: 4px 4px 0 0;
+    font-size: 12px;
+    text-align: right;
+    color: #7a7a8c;
+}
+
+.settings-error
+{
+    margin: 4px 0 0 4px;
+    font-size: 13px;
+    color: #C62828;
+}
+
+.settings-error:empty
+{
+    display: none;
+}
+
+.settings-message
+{
+    min-height: 1.2em;
+    margin: 6px 0 12px;
+    font-size: 14px;
+    color: #1B5E20;
+}
+
+.settings-message.error
+{
+    color: #C62828;
+}
+
+.settings-help
+{
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #5b5b5b;
+}
+
+.settings-help a
+{
+    color: #240090;
+    font-weight: bold;
+}
+
+.settings-save
+{
+    height: 44px;
+    padding: 0 28px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    background: #240090;
+    border: none;
+    border-radius: 22px;
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+.settings-save:hover:not(:disabled)
+{
+    background: #190061;
+}
+
+.settings-save:disabled
+{
+    opacity: .6;
+    cursor: default;
+}
+
+.settings-logout
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    height: 44px;
+    padding: 0 22px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    color: #C62828;
+    background: #fff;
+    border: 1px solid #C62828;
+    border-radius: 22px;
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+.settings-logout:hover
+{
+    background: #fdecec;
+}
+
+/* The public / private switch */
+.settings-switch-row
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 18px 20px;
+    background: #faf9ff;
+    border: 1px solid #e5e0f7;
+    border-radius: 16px;
+}
+
+.settings-switch-title
+{
+    margin: 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: #282828;
+}
+
+.switch
+{
+    position: relative;
+    flex: none;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.switch input
+{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.switch-track
+{
+    position: absolute;
+    inset: 0;
+    background: #cfd4dc;
+    border-radius: 14px;
+    transition: background-color .2s ease;
+    pointer-events: none;
+}
+
+.switch-track::after
+{
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    transition: transform .2s ease;
+}
+
+.switch input:checked + .switch-track
+{
+    background: #3500D3;
+}
+
+.switch input:checked + .switch-track::after
+{
+    transform: translateX(22px);
+}
+
+@media (max-width: 700px)
+{
+    .settings-card
+    {
+        flex-direction: column;
+    }
+
+    .settings-nav
+    {
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: auto;
+        padding: 14px;
+        border-right: none;
+        border-bottom: 1px solid #e5e0f7;
+    }
+
+    .settings-nav h2
+    {
+        width: 100%;
+        margin: 0 0 4px 4px;
+        font-size: 18px;
+    }
+
+    .settings-tab
+    {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .settings-row
+    {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+    .profile-page,
+    .profile-settings-btn,
+    .profile-tab,
+    .settings-tab,
+    .settings-save,
+    .switch-track,
+    .switch-track::after
+    {
+        transition: none;
+    }
+}
+
+
+/* ---------- Search results, notifications and profile follow button ---------- */
+
+/* Search result rows: the picture and name link to the profile */
+.search-user
+{
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Notifications: initials in place of a picture, and links to profiles */
+.notif-initials
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #240090, #3500D3);
+    border-radius: 50%;
+}
+
+.notif-user
+{
+    color: inherit;
+    text-decoration: none;
+}
+
+.notif-user:hover
+{
+    text-decoration: underline;
+}
+
+/* The author in the post pop-up is a link to their profile */
+a.post-author
+{
+    color: inherit;
+    text-decoration: none;
+}
+
+a.post-author:hover .post-name
+{
+    text-decoration: underline;
+}
+
+/* The follow button on someone's profile */
+.profile-follow-btn
+{
+    height: 40px;
+    padding: 0 26px;
+    font-size: 14px;
+}
+
+/* A private account you don't follow */
+.profile-locked
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 56px 20px;
+    text-align: center;
+    background: #faf9ff;
+    border: 1px dashed #c9bdf2;
+    border-radius: 24px;
+}
+
+.profile-locked i
+{
+    font-size: 40px;
+    color: #3500D3;
+}
+
+.profile-locked h3
+{
+    margin: 10px 0 6px;
+    font-size: 20px;
+    color: #240090;
+}
+
+.profile-locked p
+{
+    margin: 0;
+    max-width: 420px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #5b5b5b;
+}
+
+.feed-empty a
+{
+    color: #240090;
+    font-weight: bold;
+}
+
+/* Upload errors need to stay readable on top of a chosen picture */
+.upload-error
+{
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.upload-error:empty
+{
+    display: none;
+}
+
+
+/* ---------- Profile pictures ---------- */
+
+/* A picture in place of the initials circles: the sizes come from the circle classes, this only fits the picture */
+.post-avatar-img,
+.search-avatar-img,
+.notif-avatar-img
+{
+    object-fit: cover;
+    background: #ece6ff;
+}
+
+/* The picture editor at the top of Settings > Profile */
+.settings-avatar
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.settings-avatar img
+{
+    flex: none;
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(53, 0, 211, .18);
+}
+
+.settings-avatar-actions
+{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+}
+
+.settings-avatar-actions .settings-help,
+.settings-avatar-actions .settings-message
+{
+    flex-basis: 100%;
+    margin: 0;
+}
+
+.settings-avatar-actions .settings-message:empty
+{
+    display: none;
+}
+
+.settings-upload,
+.settings-remove
+{
+    height: 36px;
+    padding: 0 18px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 18px;
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+.settings-upload
+{
+    color: #fff;
+    background: #240090;
+    border: none;
+}
+
+.settings-upload:hover
+{
+    background: #190061;
+}
+
+.settings-remove
+{
+    color: #C62828;
+    background: #fff;
+    border: 1px solid #C62828;
+}
+
+.settings-remove:hover
+{
+    background: #fdecec;
+}
+
+.settings-remove[hidden]
+{
+    display: none;
+}
+
+.settings-upload:focus-visible,
+.settings-remove:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+
+/* ---------- Today's challenge banner ---------- */
+.challenge-banner
+{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 24px 28px;
+    margin-bottom: 8px;
+    color: #fff;
+    background: linear-gradient(135deg, #240090, #3500D3);
+    border-radius: 24px;
+    box-shadow: 0 4px 16px rgba(36, 0, 144, .25);
+}
+
+.challenge-banner[hidden]
+{
+    display: none;
+}
+
+.challenge-icon
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    font-size: 34px;
+    color: #fff;
+    background: rgba(255, 255, 255, .18);
+    border-radius: 50%;
+}
+
+.challenge-text
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.challenge-label
+{
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: rgba(255, 255, 255, .75);
+}
+
+.challenge-title
+{
+    margin: 0 0 6px;
+    font-size: 26px;
+}
+
+.challenge-task
+{
+    margin: 0 0 6px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.challenge-show
+{
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #d9ccff;
+}
+
+.challenge-time
+{
+    flex: none;
+    align-self: flex-start;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, .18);
+    border-radius: 20px;
+}
+
+@media (max-width: 700px)
+{
+    .challenge-banner
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .challenge-time
+    {
+        align-self: flex-start;
+    }
+}
+
+/* The challenge notification's button is a link, so it needs the button look without an underline */
+.notif-link
+{
+    display: inline-block;
+    text-decoration: none;
+}
+
+
+/* ---------- Daily Challenge filter ---------- */
+.challenge-toolbar
+{
+    align-items: center;
+    justify-content: space-between;
+}
+
+.challenge-filter
+{
+    display: flex;
+    gap: 20px;
+}
+
+/* ---------- Stories: circles and progress bars ---------- */
+
+/* Each circle sits in its own cell so the "+" can be placed on top of yours */
+.story-item
+{
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+/* Your own circle when you have no story yet: a plain light ring instead of the purple one */
+.story-ring.empty
+{
+    background: #e5e0f7;
+}
+
+.story-add
+{
+    position: absolute;
+    top: 52px;
+    left: calc(50% + 12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-size: 16px;
+    color: #fff;
+    background: #3500D3;
+    border: 2px solid #F7FAFC;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.story-add:hover
+{
+    background: #240090;
+}
+
+.story-add:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.stories-grid-note
+{
+    padding: 0 24px;
+}
+
+.stories-note
+{
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #5b5b5b;
+}
+
+.stories-note a
+{
+    color: #240090;
+    font-weight: bold;
+}
+
+/* The "follow people" note sits under the circles, across the whole grid */
+.stories-note-wide
+{
+    grid-column: 1 / -1;
+    padding: 0 8px;
+}
+
+.stories-all-card .stories-note
+{
+    margin-top: 16px;
+}
+
+/* A story's several bars, one per story the person has posted */
+.story-progress
+{
+    display: flex;
+    gap: 4px;
+    height: auto;
+    overflow: visible;
+    background: none;
+}
+
+.story-seg
+{
+    flex: 1;
+    height: 3px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, .35);
+}
+
+.story-seg-bar
+{
+    display: block;
+    width: 0;
+    height: 100%;
+    background: #fff;
+}
+
+.story-seg-bar.done
+{
+    width: 100%;
+}
+
+/* The current bar fills over the story's time, and the story moves on when the animation ends */
+.story-seg-bar.running
+{
+    animation: story-progress 5s linear forwards;
+}
+
+.story-viewer.paused .story-seg-bar,
+.story-viewer.waiting .story-seg-bar
+{
+    animation-play-state: paused;
+}
+
+/* The photo fills the story card */
+.story-media
+{
+    position: absolute;
+    inset: 0;
+}
+
+.story-media .story-image
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+
+.story-caption
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    margin: 0;
+    padding: 40px 18px 18px;
+    font-size: 15px;
+    line-height: 1.4;
+    color: #fff;
+    background: linear-gradient(to top, rgba(0, 0, 0, .7), rgba(0, 0, 0, 0));
+}
+
+.story-caption[hidden]
+{
+    display: none;
+}
+
+.story-delete[hidden]
+{
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+    .story-seg-bar.running
+    {
+        animation: none;
+        width: 100%;
+    }
+}
+
+
+/* ---------- Comments ---------- */
+.post-comments
+{
+    gap: 12px;
+}
+
+.comments-note
+{
+    margin: 0;
+    font-size: 13px;
+    color: #7a7a8c;
+}
+
+.post-comment
+{
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.comment-avatar
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+    background: #240090;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-body
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.comment-text
+{
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #282828;
+    overflow-wrap: anywhere;
+}
+
+.comment-name
+{
+    font-weight: bold;
+    color: #240090;
+    text-decoration: none;
+}
+
+.comment-name:hover
+{
+    text-decoration: underline;
+}
+
+.comment-time
+{
+    font-size: 11px;
+    color: #7a7a8c;
+}
+
+.comment-delete
+{
+    flex: none;
+    display: flex;
+    padding: 4px;
+    font-size: 16px;
+    color: #7a7a8c;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.comment-delete:hover
+{
+    color: #C62828;
+    background: #fdecec;
+}
+
+.comment-delete:focus-visible,
+.post-comment-send:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.post-comment-form
+{
+    display: flex;
+    gap: 8px;
+}
+
+.post-comment-form .post-comment-input
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.post-comment-send
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+    color: #fff;
+    background: #240090;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.post-comment-send:hover:not(:disabled)
+{
+    background: #190061;
+}
+
+.post-comment-send:disabled
+{
+    opacity: .6;
+    cursor: default;
+}
+
+.comment-error
+{
+    margin: 0;
+    font-size: 13px;
+    color: #C62828;
+}
+
+.comment-error:empty
+{
+    display: none;
+}
+
+
+/* ---------- "Are you sure?" pop-up, delete buttons ---------- */
+.confirm-modal
+{
+    position: fixed;
+    inset: 0;
+    z-index: 1300;   /* above the post pop-up, the settings window and the story viewer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(25, 0, 97, .6);
+}
+
+.confirm-box
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 28px 28px 24px;
+    box-sizing: border-box;
+    text-align: center;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(25, 0, 97, .35);
+}
+
+.confirm-icon
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    font-size: 26px;
+    color: #C62828;
+    background: #fdecec;
+    border-radius: 50%;
+}
+
+.confirm-box h2
+{
+    margin: 14px 0 8px;
+    font-size: 20px;
+    color: #240090;
+}
+
+.confirm-message
+{
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+}
+
+.confirm-password
+{
+    width: 100%;
+    height: 44px;
+    margin-top: 16px;
+    padding: 0 14px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 15px;
+    border: 1px solid #cfc8ee;
+    border-radius: 12px;
+}
+
+.confirm-password:focus
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 0;
+}
+
+.confirm-error
+{
+    margin: 10px 0 0;
+    font-size: 13px;
+    color: #C62828;
+}
+
+.confirm-error:empty
+{
+    display: none;
+}
+
+.confirm-buttons
+{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-top: 22px;
+}
+
+.confirm-cancel,
+.confirm-ok
+{
+    flex: 1;
+    height: 44px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 22px;
+    cursor: pointer;
+}
+
+.confirm-cancel
+{
+    color: #240090;
+    background: #fff;
+    border: 1px solid #cfc8ee;
+}
+
+.confirm-cancel:hover
+{
+    background: #f3f0ff;
+}
+
+.confirm-ok
+{
+    color: #fff;
+    background: #C62828;
+    border: 1px solid #C62828;
+}
+
+.confirm-ok:hover:not(:disabled)
+{
+    background: #a91f1f;
+}
+
+.confirm-ok:disabled
+{
+    opacity: .6;
+    cursor: default;
+}
+
+.confirm-cancel:focus-visible,
+.confirm-ok:focus-visible,
+.post-delete:focus-visible,
+.settings-delete:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+/* The bin button on your own post, to the left of the close button */
+.post-delete
+{
+    position: absolute;
+    top: 12px;
+    right: 52px;
+    z-index: 2;
+    display: flex;
+    padding: 6px;
+    font-size: 20px;
+    color: #C62828;
+    background: rgba(255, 255, 255, .9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.post-delete:hover
+{
+    background: #fdecec;
+}
+
+/* Settings > Account: delete account */
+.danger-zone
+{
+    margin-top: 28px;
+    padding: 18px 20px;
+    background: #fff7f7;
+    border: 1px solid #f3c6c6;
+    border-radius: 16px;
+}
+
+.danger-zone h4
+{
+    margin: 0 0 6px;
+    font-size: 16px;
+    color: #C62828;
+}
+
+.settings-delete
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    height: 44px;
+    padding: 0 22px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    background: #C62828;
+    border: 1px solid #C62828;
+    border-radius: 22px;
+    cursor: pointer;
+}
+
+.settings-delete:hover
+{
+    background: #a91f1f;
+}
+
+/* ---------- Messaging (Socket.IO) ---------- */
+.chat-initials
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background: #240090;
+    border-radius: 50%;
+}
+
+.chat-error
+{
+    margin: 0;
+    padding: 0 28px 8px;
+    font-size: 13px;
+    color: #C62828;
+}
+
+.chat-error:empty
+{
+    display: none;
+}
+
+.chat-locked
+{
+    margin: 0;
+    padding: 16px 28px;
+    font-size: 14px;
+    text-align: center;
+    color: #5b5b5b;
+    border-top: 1px solid #e5e0f7;
+}
+
+.chat-header .online-dot[hidden]
+{
+    display: none;
+}
+
+/* The information pop-up (noticeDialog): purple instead of red */
+.notice-modal .confirm-icon
+{
+    color: #3500D3;
+    background: #f0ecff;
+}
+
+.notice-modal .confirm-ok
+{
+    background: #240090;
+    border-color: #240090;
+}
+
+.notice-modal .confirm-ok:hover:not(:disabled)
+{
+    background: #190061;
+}
+
+
+/* ---------- Load more, edit caption, Message button ---------- */
+.load-more
+{
+    display: flex;
+    justify-content: center;
+    padding: 24px 0 8px;
+}
+
+.load-more-btn
+{
+    height: 44px;
+    padding: 0 32px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    color: #240090;
+    background: #fff;
+    border: 1px solid #cfc8ee;
+    border-radius: 22px;
+    cursor: pointer;
+}
+
+.load-more-btn:hover:not(:disabled)
+{
+    background: #f3f0ff;
+}
+
+.load-more-btn:disabled
+{
+    opacity: .6;
+    cursor: default;
+}
+
+.load-more-btn:focus-visible,
+.post-edit:focus-visible,
+.caption-save:focus-visible,
+.caption-cancel:focus-visible,
+.profile-message-btn:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+/* The pencil button, to the left of the bin */
+.post-edit
+{
+    position: absolute;
+    top: 12px;
+    right: 92px;
+    z-index: 2;
+    display: flex;
+    padding: 6px;
+    font-size: 20px;
+    color: #240090;
+    background: rgba(255, 255, 255, .9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.post-edit:hover
+{
+    background: #f3f0ff;
+}
+
+.caption-editor
+{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.caption-input
+{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 14px;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: vertical;
+    border: 1px solid #cfc8ee;
+    border-radius: 12px;
+}
+
+.caption-input:focus
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 0;
+}
+
+.caption-buttons
+{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.caption-cancel,
+.caption-save
+{
+    height: 36px;
+    padding: 0 18px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 18px;
+    cursor: pointer;
+}
+
+.caption-cancel
+{
+    color: #240090;
+    background: #fff;
+    border: 1px solid #cfc8ee;
+}
+
+.caption-save
+{
+    color: #fff;
+    background: #240090;
+    border: 1px solid #240090;
+}
+
+.caption-save:disabled
+{
+    opacity: .6;
+    cursor: default;
+}
+
+/* The Message button next to Follow on a mate's profile */
+.profile-message-btn
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 22px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #240090;
+    background: #fff;
+    border: 1px solid #cfc8ee;
+    border-radius: 20px;
+}
+
+.profile-message-btn:hover
+{
+    background: #f3f0ff;
+}
+
+
+/* ---------- Credits pop-up ---------- */
+.credits-modal
+{
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(25, 0, 97, .6);
+}
+
+.credits-card
+{
+    position: relative;
+    width: min(540px, 100%);
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 28px 28px 20px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .35);
+}
+
+.credits-card h2
+{
+    margin: 0 0 6px;
+    font-size: 24px;
+    color: #240090;
+}
+
+.credits-intro
+{
+    margin: 0 0 18px;
+    font-size: 14px;
+    color: #5b5b5b;
+}
+
+.credits-close
+{
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    padding: 4px;
+    font-size: 26px;
+    color: #240090;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.credits-close:hover
+{
+    background: #f3f0ff;
+}
+
+.credits-close:focus-visible,
+.credit-image:focus-visible,
+.credit-logo:focus-visible,
+.credit-text a:focus-visible
+{
+    outline: 2px solid #3500D3;
+    outline-offset: 2px;
+}
+
+.credit-item
+{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 0;
+    border-top: 1px solid #e5e0f7;
+}
+
+.credit-image,
+.credit-logo
+{
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 84px;
+    height: 84px;
+    box-sizing: border-box;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #240090;
+    background: #faf9ff;
+    border: 1px solid #e5e0f7;
+    border-radius: 16px;
+    transition: border-color .2s ease, background-color .2s ease;
+}
+
+.credit-image:hover,
+.credit-logo:hover
+{
+    background: #f3f0ff;
+    border-color: #c9bdf2;
+}
+
+.credit-image img
+{
+    display: block;
+    width: 64px;
+    height: 64px;
+}
+
+.credit-text
+{
+    min-width: 0;
+}
+
+.credit-text h3
+{
+    margin: 0 0 2px;
+    font-size: 16px;
+    color: #282828;
+}
+
+.credit-text p
+{
+    margin: 4px 0 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #444;
+}
+
+.credit-text .credit-meta
+{
+    font-size: 12px;
+    color: #7a7a8c;
+}
+
+.credit-text a
+{
+    color: #3500D3;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px)
+{
+    .credit-item
+    {
+        align-items: flex-start;
+    }
+
+    .credit-image,
+    .credit-logo
+    {
+        width: 64px;
+        height: 64px;
+    }
+
+    .credit-image img
+    {
+        width: 48px;
+        height: 48px;
+    }
+}

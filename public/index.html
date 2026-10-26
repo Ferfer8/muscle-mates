@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- Muscle Mates: the single page the app runs in. main.js draws each page into #app; the "Create new post" pop-up is defined here and driven by upload.js. -->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Muscle Mates</title>
+    <meta name="description"
+        content="Muscle Mates is a social app for gym-goers. Share workout photos, take on the Daily Challenge, follow friends, make mates and chat with them.">
+    <meta name="theme-color" content="#240090">
+    <!-- Link previews (Open Graph, plus a Twitter card). -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Muscle Mates">
+    <meta property="og:title" content="Muscle Mates">
+    <meta property="og:description"
+        content="A social app for gym-goers: share workout photos, take on the Daily Challenge, follow friends, make mates and chat with them.">
+    <meta property="og:url" content="__BASE_URL__/">
+    <meta property="og:image" content="__BASE_URL__/assets/logo/logo.png">
+    <meta property="og:image:alt" content="The Muscle Mates logo">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Muscle Mates">
+    <meta name="twitter:description"
+        content="A social app for gym-goers: share workout photos, take on the Daily Challenge, follow friends, make mates and chat with them.">
+    <meta name="twitter:image" content="__BASE_URL__/assets/logo/logo.png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Boxicons icon font, loaded from unpkg -->
+    <link href="./styles/main.css" type="text/css" rel="stylesheet">
+    <link href="./styles/login.css" type="text/css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/logo/logo.png">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Pages are drawn here by main.js -->
+    </div>
+
+    <!-- Modal to create new post (behaviour is in upload.js) -->
+    <div id="overlayModal" class="overlayModal">
+        <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+            <button type="button" class="create-close" id="closeUpload" aria-label="Close"><i
+                    class='bx bx-x'></i></button>
+            <h2 id="createTitle">Create new post</h2>
+            <div class="create-container">
+                <div class="upload-card">
+                    <!-- accept makes the file picker offer only JPG, PNG and WebP photos (upload.js and the server check again) -->
+                    <input type="file" id="fileInput" class="file-input" accept="image/jpeg,image/png,image/webp">
+                    <label for="fileInput" id="uploadContainer" class="upload-drop">
+                        <img src="assets/upload.png" alt="">
+                        <span class="upload-title">Click to upload</span>
+                        <span class="upload-hint">or drag and drop a photo here<br>JPG, PNG or WebP. Photos are shrunk
+                            automatically.</span>
+                    </label>
+                    <div class="upload-preview" id="uploadPreview" hidden>
+                        <img id="previewImage" alt="Preview of your post">
+                        <button type="button" class="upload-remove" id="removeImage" aria-label="Remove photo"><i
+                                class='bx bx-x'></i></button>
+                    </div>
+                    <p class="upload-error" id="uploadError" role="alert"></p>
+                </div>
+                <div id="captionContainer">
+                    <div class="caption-user-details">
+                        <img id="createAvatar" alt="">
+                        <p id="createUsername">@username</p>
+                    </div>
+                    <textarea id="captionInput" placeholder="Write a caption..." maxlength="300"
+                        aria-label="Caption"></textarea>
+                    <div class="caption-footer">
+                        <span id="captionCount">0/300</span>
+                        <button type="button" id="postBtn" disabled>Post</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel for notifications (filled in by notifications.js) -->
+    <div id="notificationModal" class="notification-modal" role="dialog" aria-label="Notifications"></div>
+</body>
+<script src="./script/main.js"></script>
+<script src="./script/confirm.js"></script>
+<script src="./script/credits.js"></script>
+<script src="./script/validation.js"></script>
+<script src="./script/auth.js"></script>
+<script src="./script/search.js"></script>
+<script src="./script/feed.js"></script>
+<script src="./script/stories.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="./script/messages.js"></script>
+<script src="./script/notifications.js"></script>
+<script src="./script/profile.js"></script>
+<script src="./script/upload.js"></script>
+
+</html>

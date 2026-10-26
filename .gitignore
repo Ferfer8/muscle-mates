@@ -1,0 +1,21 @@
+.env
+node_modules
+
+# Other environment files
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Test output
+coverage/
+
+# My own notes about the code (not for GitHub)
+docs/
