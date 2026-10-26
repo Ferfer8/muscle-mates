@@ -4,7 +4,7 @@
 
 Muscle Mates is a social app for gym-goers. Post workout photos, take on a new Daily Challenge every day, follow people, make mates (people who follow each other) and chat with them in real time.
 
-**[▶ Try Muscle Mates](LIVE-LINK-GOES-HERE)**
+**[▶ Try Muscle Mates](https://muscle-mates.onrender.com/#/login)**
 
 ---
 
