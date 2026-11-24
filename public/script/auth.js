@@ -189,6 +189,28 @@ document.addEventListener("submit", (e) => {
     handler(e.target);
 });
 
+// "Login with demo" signs in as the shared demo user. The server does it, so no password is sent or stored in the page.
+document.addEventListener("click", async (e) => {
+    const button = e.target.closest("#demoLoginBtn");
+    if (!button) return;
+
+    setAuthMessage("loginError", "");
+    button.disabled = true;
+    button.textContent = "Logging in...";
+    try {
+        const { ok, data } = await postJson("/api/demo-login", {});
+        if (ok) {
+            window.location.hash = "#/feed";
+            return;
+        }
+        setAuthMessage("loginError", data.message || "Something went wrong. Please try again.");
+    } catch (error) {
+        setAuthMessage("loginError", NETWORK_ERROR);
+    }
+    button.disabled = false;
+    button.textContent = "Login with demo";
+});
+
 // Clears a field's error as soon as the user edits it
 document.addEventListener("input", (e) => {
     const form = e.target.closest("#lForm, #fForm, #rForm");

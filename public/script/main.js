@@ -420,6 +420,7 @@ function loadLoginPage() {
                     </div>
                     <p class="form-error" id="loginError" role="alert"></p>
                     <button type="submit" class="btn">Login</button>
+                    <button type="button" class="btn btn-demo" id="demoLoginBtn">Login with demo</button>
                     <!-- Link to sign up page -->
                     <div class="link">
                         <p>Don't have an account? <a href="#/signup">Register</a></p>

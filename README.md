@@ -36,7 +36,7 @@ The demo accounts and their posts are sample data, so the app feels lived in whe
 
 ## How to Use
 
-1. Sign up (you must be 16 or older), or log in with a demo account: username `liftwithjordan` and password `password123`.
+1. Click **Login with demo** on the login page, or create your own account (you must be 16 or older).
 2. Follow a few people and check the feed tabs.
 3. Post a photo from the **Create** button, or take on today's **Daily Challenge**.
 4. Follow someone who follows you back to become mates, then message them from the **Messages** page.

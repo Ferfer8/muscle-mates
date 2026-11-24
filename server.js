@@ -329,6 +329,29 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+// POST to log in as the demo user with one click, so visitors don't need a password (and the password never appears in the repo).
+// The demo account is protected below: it can't change its password or username, or be deleted, so one visitor can't lock out the next.
+const DEMO_USERNAME = (process.env.DEMO_USERNAME || 'liftwithjordan').toLowerCase();
+const isDemoUser = (user) => Boolean(user) && String(user.username).toLowerCase() === DEMO_USERNAME;
+const DEMO_LOCKED_MESSAGE = 'This is the shared demo account, so this change is turned off. Create your own account to try it.';
+
+app.post('/api/demo-login', async (req, res) => {
+    try {
+        const limitKey = `demo:${req.ip}`;
+        if (isLimited(limitKey, 30)) return res.status(429).json({ message: 'Too many attempts. Please wait 15 minutes and try again.' });
+        recordAttempt(limitKey);
+
+        const user = await client.db(DB_NAME).collection('users').findOne({ usernameLower: DEMO_USERNAME });
+        if (!user) return res.status(404).json({ message: 'The demo account is not available right now. You can create an account instead.' });
+
+        await startSession(res, user._id);
+        res.json({ message: 'Logged in!', user: { firstName: user.firstName, username: user.username } });
+    } catch (error) {
+        console.error('Demo login failed', error);
+        res.status(500).json({ message: 'Something went wrong. Please try again.' });
+    }
+});
+
 // GET the currently logged-in user
 app.get('/api/me', requireAuth, (req, res) => {
     res.json(req.user);
@@ -1876,6 +1899,7 @@ app.get('/api/profile', requireAuth, async (req, res) => {
 app.patch('/api/profile', requireAuth, async (req, res) => {
     try {
         const body = req.body || {};
+        if (isDemoUser(req.user) && 'username' in body) return res.status(403).json({ message: DEMO_LOCKED_MESSAGE });
         const changes = {};
         const errors = {};
 
@@ -1951,6 +1975,7 @@ app.patch('/api/profile', requireAuth, async (req, res) => {
 // POST to change your password from settings (you need your current one)
 app.post('/api/change-password', requireAuth, async (req, res) => {
     try {
+        if (isDemoUser(req.user)) return res.status(403).json({ message: DEMO_LOCKED_MESSAGE });
         const currentPassword = String(req.body?.currentPassword ?? '');
         const newPassword = String(req.body?.newPassword ?? '');
         const confirmPassword = String(req.body?.confirmPassword ?? '');
@@ -2035,6 +2060,7 @@ async function deleteAccount(userId) {
 // DELETE your account. You must send your password, as well as confirming on the page.
 app.delete('/api/profile', requireAuth, async (req, res) => {
     try {
+        if (isDemoUser(req.user)) return res.status(403).json({ message: DEMO_LOCKED_MESSAGE });
         const password = String(req.body?.password ?? '');
         if (!password) return res.status(400).json({ errors: { password: 'Enter your password to delete your account' } });
 

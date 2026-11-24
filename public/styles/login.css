@@ -871,6 +871,27 @@ select {
     margin-left: 0;
 }
 
+/* "Login with demo": a smaller, outlined button under the main Login button */
+.login-box .btn.btn-demo {
+    height: 44px;
+    margin-top: 12px;
+    font-size: 20px;
+    color: #240090;
+    background: transparent;
+    border: 2px solid #240090;
+    box-shadow: none;
+}
+
+.login-box .btn.btn-demo:hover:not(:disabled) {
+    background: #240090;
+    color: #fff;
+}
+
+.login-box .btn.btn-demo:disabled {
+    opacity: .7;
+    cursor: default;
+}
+
 /* Re-centres the shifted fields and button on the page */
 .login-box form {
     position: relative;
